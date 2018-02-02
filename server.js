@@ -32,9 +32,8 @@ webServer.post('/justap/open', (req, res, next) => {
     .then(() => {
       // memo: delay秒後に呼ばれる
       // ここでバルブを閉める
-      testFunc(`after then`)
       console.log(`finisehd`);
-    })　
+    })
     .catch((err) => {
       console.log(err);
     });
