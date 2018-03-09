@@ -1,0 +1,6 @@
+{
+  "server_url": "http://localhost:8001",
+  "justap": {
+    "device_id": "justap"
+  }
+}
