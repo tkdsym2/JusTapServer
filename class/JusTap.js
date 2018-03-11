@@ -1,29 +1,46 @@
+'use strict'
+
 const Device = require('../lib/Device.js')
 
 class JusTap extends Device {
-    constructor(socket, commonConfig, config) {
+    constructor(socket, commonConfig) {
         super(socket, commonConfig)
         this.hard = require('./JusTap_hard.js')
         this.status = {
-            trigger: false,
-            time: null
+            washing: false,
+            time: 0
         }
         this.init()
     }
 
     init() {
+        this.washing()
+        this.openByTime()
+    }
+
+    washing() {
         const self = this
-        self.on('justap/trigger', data => {
-            console.log('received', data)
-            if (data) {
-                console.log('data is true', data)
-                self.hard.trigger.release(data)
-            } else {
-                console.log('data is false')
-                self.hard.trigger.close(data)
-            }
-            self.status.time = data
-            self.push('justap/trigger', data)
+        // start supplying water
+        self.on('washing/trigger', flag => {
+            console.log('receiving flag ', flag)
+            self.status.washing = flag
+            self.push('washing/trigger', flag)
+            self.hard.washing.trigger(flag)
+        })
+    }
+
+    openByTime() {
+        const self = this
+        // start supplying water by time
+        self.on('openByTime/time', span => {
+            console.log('receiving span is ', span)
+            self.status.time = Number(span)
+            self.push('openByTime/time', span)
+            self.hard.openByTime.time(Number(span))
+            setTimeout(() => {
+                self.status.time = 0
+                self.push('openByTime/time', 0)
+            }, Number(span))
         })
     }
 }
