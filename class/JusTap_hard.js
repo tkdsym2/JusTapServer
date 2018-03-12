@@ -46,16 +46,10 @@ exports.washing = {
     trigger: flag => {
         if (flag) {
             console.log('supplying water !')
+            // startSupplyingWater()
         } else {
             console.log('stop water')
+            // stopSupplyingWater()
         }
-    },
-    release: () => {
-        console.log('supplying water !')
-        startSupplyingWater()
-    },
-    close: () => {
-        console.log('stop water')
-        stopSupplyingWater()
     }
 }
